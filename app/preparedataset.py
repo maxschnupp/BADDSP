@@ -23,6 +23,8 @@ def prepareDataset(audioFolderPath):
 
     dataset_files = glob.glob('./assets/data' + '/*')
 
+    print("here")
+
     # if dataset already populated break
     if len(dataset_files) > 0:
         return
@@ -33,9 +35,15 @@ def prepareDataset(audioFolderPath):
         if not glob.glob(audioFilePattern):
             raise ValueError('No audio files found.')
 
+        os.system("ls")
         # use the ddsp helper to prepare tfrecord from audio
-        os.system("ddsp_prepare_tfrecord"
-                  "--input_audio_filepatterns=" + audioFilePattern +
-                  "--output_tfrecord_path=" + TRAIN_TFRECORD +
-                  "--num_shards=10"
-                  "--alsologtostderr")
+
+        cmdString = ("ddsp_prepare_tfrecord" +
+                     " --input_audio_filepatterns=" + audioFilePattern +
+                     " --output_tfrecord_path=" + TRAIN_TFRECORD +
+                     " --num_shards=10"
+                     " --alsologtostderr")
+
+        os.system(cmdString)
+        #for testing purposes only
+        return cmdString
