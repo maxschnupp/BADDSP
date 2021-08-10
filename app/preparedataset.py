@@ -1,29 +1,29 @@
 import os
 import glob
-
-TRAIN_TFRECORD = './assets/data/train.tfrecord'
-TRAIN_TFRECORD_FILEPATTERN = TRAIN_TFRECORD + '*'
-
-
-def replaceWhitespaceWithUnderscoreInFilenames(folderPath):
-    for fname in os.listdir(folderPath):
-        os.rename(os.path.join(folderPath, fname),
-                  os.path.join(folderPath, os.path.basename(fname).replace(' ', '_')))
+import ddsp
+import ddsp.training
+import tensorflow as tf
+import pickle
+import constants
 
 
-def prepareDataset(audioFolderPath):
+def replace_whitespace_with_underscore_in_filenames(folder_path):
+    for fname in os.listdir(folder_path):
+        os.rename(os.path.join(folder_path, fname),
+                  os.path.join(folder_path, os.path.basename(fname).replace(' ', '_')))
 
-    audio_files = os.path.join("./assets/", audioFolderPath)
 
-    audioFilePattern = audio_files + '/*'
+def prepare_dataset(audio_folder_path):
+
+    audio_files = os.path.join("./assets/", audio_folder_path)
+
+    audio_file_pattern = audio_files + '/*'
 
     # format audiofile names
 
-    replaceWhitespaceWithUnderscoreInFilenames(audio_files)
+    replace_whitespace_with_underscore_in_filenames(audio_files)
 
     dataset_files = glob.glob('./assets/data' + '/*')
-
-    print("here")
 
     # if dataset already populated break
     if len(dataset_files) > 0:
@@ -31,19 +31,39 @@ def prepareDataset(audioFolderPath):
 
     else:
         # make new dataset
-        print("audioFilePattern " + audioFilePattern)
-        if not glob.glob(audioFilePattern):
+        print("audio_file_pattern " + audio_file_pattern)
+        if not glob.glob(audio_file_pattern):
             raise ValueError('No audio files found.')
 
-        os.system("ls")
         # use the ddsp helper to prepare tfrecord from audio
 
-        cmdString = ("ddsp_prepare_tfrecord" +
-                     " --input_audio_filepatterns=" + audioFilePattern +
-                     " --output_tfrecord_path=" + TRAIN_TFRECORD +
+        cmd_string = ("ddsp_prepare_tfrecord" +
+                     " --input_audio_filepatterns=" + audio_file_pattern +
+                     " --output_tfrecord_path=" + constants.TRAIN_TFRECORD +
                      " --num_shards=10"
                      " --alsologtostderr")
 
-        os.system(cmdString)
-        #for testing purposes only
-        return cmdString
+        os.system(cmd_string)
+        # for testing purposes only
+        return cmd_string
+
+
+def save_dataset_stats_as(filename, batch_size=1, power_frame_size=256):
+    data_provider = ddsp.training.data.TFRecordProvider(
+        constants.TRAIN_TFRECORD_FILEPATTERN)
+
+    file_path = os.path.join(constants.STATS_PATH, filename)
+
+    os.system('mkdir -p ' + constants.STATS_PATH)
+
+    ds_stats = ddsp.training.postprocessing.compute_dataset_statistics(
+        data_provider, batch_size, power_frame_size)
+
+    if file_path is not None:
+        with tf.io.gfile.GFile(file_path, 'wb') as f:
+            pickle.dump(ds_stats, f)
+        
+
+    print(f'Done! Saved dataset statistics to: {file_path}')
+
+    return ds_stats

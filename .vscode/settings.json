@@ -1,0 +1,6 @@
+{
+    "docker-linter.flake8.container": "baddsp",
+    "docker-linter.flake8.enable": true,
+    "docker-linter.flake8.machine": "",
+    "python.linting.enabled": true
+}
