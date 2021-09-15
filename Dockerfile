@@ -5,3 +5,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends libsndfile1 ffm
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 ADD /app /app
+ENV GOOGLE_APPLICATION_CREDENTIALS="/app/serviceKey.json"
