@@ -6,8 +6,8 @@ if __name__ == "__main__":
         startup_param = str(sys.argv[1])
         if startup_param == "--train":
             try:
-                audio_folder_path = str(sys.argv[2])
-                train.train(audio_folder_path)
+                audio_folder_name = str(sys.argv[2])
+                train.train(audio_folder_name)
             except IndexError:
                 print("train expects exactly one argument   <audio_folder_path>\n"
                       + "   recieved 0")

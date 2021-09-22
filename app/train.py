@@ -4,14 +4,14 @@ import os
 import gin_file_watcher
 
 
-def train(audio_folder_path):
-    print(audio_folder_path)
+def train(audio_folder_name):
+    print(audio_folder_name)
 
     ## start file watcher thread to autosave checkpoints to bucket
     file_thread = gin_file_watcher.get_watchdog_thread()
     file_thread.start()
 
-    preparedataset.prepare_dataset(audio_folder_path)
+    preparedataset.prepare_dataset(audio_folder_name)
     preparedataset.save_dataset_stats_as('dataset_statistics.pkl')
 
     cmd_string = ("ddsp_run \ " +
