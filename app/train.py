@@ -22,7 +22,7 @@ def train(audio_folder_name):
     " --gin_file=datasets/tfrecord.gin \ " +
     " --gin_param=\"TFRecordProvider.file_pattern='{}'\" \ ".format(constants.TRAIN_TFRECORD_FILEPATTERN) +
     ##batch size should be 16 reducing to 1 to see if ram is killing training
-    " --gin_param=\"batch_size=1\" \ " +
+    " --gin_param=\"batch_size=16\" \ " +
     " --gin_param=\"train_util.train.num_steps=30000\" \ " +
     " --gin_param=\"train_util.train.steps_per_save=300\" \ " +
     " --gin_param=\"trainers.Trainer.checkpoints_to_keep=10\" \ ")
