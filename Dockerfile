@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:latest-gpu
+FROM tensorflow/tensorflow:latest
 WORKDIR /app
 ADD ./requirements.txt /app/requirements.txt
 RUN apt-get update && apt-get install -y --no-install-recommends libsndfile1 ffmpeg

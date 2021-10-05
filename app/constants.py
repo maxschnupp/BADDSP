@@ -5,3 +5,4 @@ SAVE_DIR = "assets/models/ddsp-solo-instrument"
 BUCKET_NAME = "ddsp-gin-files"
 TAG = "flugelhorn"
 AUDIO_INPUT = './assets/audioIn'
+AUDIO_OUTPUT = './assets/audioOut'

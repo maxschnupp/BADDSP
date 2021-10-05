@@ -4,10 +4,18 @@ import gin
 import tensorflow as tf
 import ddsp
 
+def get_file_name_containing_string(search_string, directory):
+    for _ , _ , files in os.walk(directory):
+        for file in files:
+            if search_string in file:
+                return file
+
 def get_gin_file_path():
     print("getting gin file path")
+    search_string = '.gin'
+    gin_file_name = get_file_name_containing_string(search_string, constants.SAVE_DIR)
     try:
-        gin_file = os.path.join(constants.SAVE_DIR)
+        gin_file = os.path.join(constants.SAVE_DIR, gin_file_name)
         return gin_file
     except:
         print("Could not load gin file!")
@@ -22,18 +30,20 @@ def get_chekpoint_path():
         print("could not locate checkpoint")
 
 def restore_model(audio_features, ckpt):
-    print("restoring model")
+    print("restoring model, checkpoint:", ckpt)
     model = ddsp.training.models.Autoencoder()
-    model.restore(ckpt)
-    print("restoring model")
+    print('got here1')
+    ## supress compiler warnings on missing variables as not training
+    model.restore(ckpt, verbose=False)
+    print('got here2')
     _ = model(audio_features, training=False)
     print("done")
     return model
 
 def get_trimmed_audio_features(gin_file, audio, audio_features):
-    print("getting trimmed audio features")
+    print("getting trimmed audio features", gin_file)
     with gin.unlock_config():
-        gin.parse_config_file(gin_file, skip_unkown=True)
+        gin.parse_config_file(gin_file, skip_unknown=True)
     
     time_steps_train = gin.query_parameter('F0LoudnessPreprocessor.time_steps')
     n_samples_train = gin.query_parameter('Harmonic.n_samples')
@@ -55,3 +65,5 @@ def get_trimmed_audio_features(gin_file, audio, audio_features):
     for key in ['f0_hz', 'f0_confidence', 'loudness_db']:
         audio_features[key] = audio_features[key][:time_steps]
         audio_features['audio'] = audio_features['audio'][:, :n_samples]
+    
+    return audio_features

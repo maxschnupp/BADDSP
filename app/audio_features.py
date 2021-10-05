@@ -18,15 +18,15 @@ def get_audio_file_as_numpy_array(file_name):
     print('getting audio as numpy array')
     with open('{}/{}'.format(constants.AUDIO_INPUT, file_name), 'rb') as file_descriptor:
         contents = file_descriptor.read()
-        return audio_to_numpy_array(contents)
+        audio = audio_to_numpy_array(contents)
+        if len(audio.shape) == 1:
+            audio=audio[np.newaxis, :]
+        return audio
 
 
 def get_audio_features(file_name):
     print('getting audio features')
     audio=get_audio_file_as_numpy_array(file_name)
-
-    if len(audio.shape) == 1:
-        audio=audio[np.newaxis, :]
 
     ddsp.spectral_ops.reset_crepe()
 
