@@ -8,7 +8,7 @@ import time
 class TestGinFileWatcher(unittest.TestCase):
 
     def test_gin_file_watcher(self):
-        ##  should match and trigger for gin files in the folder
+        ##  should match and trigger for files in the folder
         with mock.patch('gin_file_watcher.on_created') as on_created:
             file_thread = gin_file_watcher.get_watchdog_thread()
             file_thread.start()

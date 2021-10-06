@@ -1,6 +1,7 @@
 import sys
 import train
 import transfer_timbre
+import constants
 
 if __name__ == "__main__":
     try:
@@ -16,11 +17,25 @@ if __name__ == "__main__":
             try:
                 source_audio_file_name = str(sys.argv[2])
                 target_path = str(sys.argv[3])
-                transfer_timbre.transfer_timbre(source_audio_file_name, target_path)
+                label = str(sys.argv[4])
+                transfer_timbre.transfer_timbre(source_audio_file_name, target_path, label)
             except IndexError:
                 print(
                     "--transfer expects exactly two arguments \n" + 
-                    " <source_audio_file_name> <target_path>")
+                    " <source_audio_file_name> <target_path> <label>")
+        elif startup_param == "--trasnfer_all":
+            try:
+                label = str(sys.argv[2])
+                directory = constants.AUDIO_INPUT
+                if (3 < len(sys.argv)):
+                    directory = directory
+                transfer_timbre.transfer_all(label, directory)
+            except IndexError:
+                print(
+                    "--transfer_all expects at least one argument \n" + 
+                    " <label> <direcotry>\n" + 
+                    "label - label to be prepended to output file names\n" +
+                    "direcotry (optional) - directory to transfer files from defaults to ./assets/audioIn")
 
     except:
         print("script expects at least one parameter: \n"

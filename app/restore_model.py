@@ -32,10 +32,8 @@ def get_chekpoint_path():
 def restore_model(audio_features, ckpt):
     print("restoring model, checkpoint:", ckpt)
     model = ddsp.training.models.Autoencoder()
-    print('got here1')
     ## supress compiler warnings on missing variables as not training
     model.restore(ckpt, verbose=False)
-    print('got here2')
     _ = model(audio_features, training=False)
     print("done")
     return model

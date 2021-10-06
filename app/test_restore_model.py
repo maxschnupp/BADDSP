@@ -28,4 +28,4 @@ class TestRestoreModel(unittest.TestCase):
             audio_features.get_audio_file_as_numpy_array('test_audio.wav'), 
             audio_features.get_audio_features('test_audio.wav')
         )
-        result = restore_model.restore_model(trimmed_audio_features, checkpoint_path)
+        restore_model.restore_model(trimmed_audio_features, checkpoint_path)
