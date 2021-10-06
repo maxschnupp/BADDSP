@@ -9,7 +9,7 @@ def on_created(event):
     filename = event.src_path.split("/")[-1]
     print("hey this file {} was created".format(filename))
     try: 
-        bucketAPI.upload_to_bucket(filename, constants.TAG)
+        bucketAPI.upload_to_gin_bucket(filename, constants.TAG)
     except:
         print("error uploading file")
 
@@ -21,7 +21,7 @@ def run_watchdog_observer():
     print("\n\nobserver started\n\n")
 
     my_event_handler = PatternMatchingEventHandler(
-        patterns = ["*.gin"], 
+        patterns = ["*.gin", "ckpt"], 
         ignore_patterns = None, 
         ignore_directories = False, 
         case_sensitive = True

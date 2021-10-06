@@ -4,3 +4,5 @@ pytest==4.6.11
 ddsp==1.6.2
 apache_beam==2.31.0
 google-cloud==0.34.0
+note-seq==0.0.2
+scipy==1.5.4

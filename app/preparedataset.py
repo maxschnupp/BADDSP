@@ -13,9 +13,9 @@ def replace_whitespace_with_underscore_in_filenames(folder_path):
                   os.path.join(folder_path, os.path.basename(fname).replace(' ', '_')))
 
 
-def prepare_dataset(audio_folder_path):
+def prepare_dataset(audio_folder_name):
 
-    audio_files = os.path.join("./assets/", audio_folder_path)
+    audio_files = os.path.join("./assets/", audio_folder_name)
 
     audio_file_pattern = audio_files + '/*'
 
