@@ -12,7 +12,7 @@ class TestGinFileWatcher(unittest.TestCase):
         with mock.patch('gin_file_watcher.on_created') as on_created:
             file_thread = gin_file_watcher.get_watchdog_thread()
             file_thread.start()
-            os.system('> {}/test.gin'.format(constants.SAVE_DIR))
+            os.system('> {}/fake_test_checkpoint.index'.format(constants.SAVE_DIR))
             time.sleep(4)
             self.assertTrue(on_created.called)
         ##  should not match and not trigger for files not in the folder

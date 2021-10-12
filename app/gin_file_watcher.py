@@ -21,10 +21,10 @@ def run_watchdog_observer():
     print("\n\nobserver started\n\n")
 
     my_event_handler = PatternMatchingEventHandler(
-        patterns = ["*.gin", "ckpt"], 
+        patterns = ["*"], 
         ignore_patterns = None, 
         ignore_directories = False, 
-        case_sensitive = True
+        case_sensitive = False
     )
 
     my_event_handler.on_created = on_created
