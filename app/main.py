@@ -21,7 +21,7 @@ if __name__ == "__main__":
                 transfer_timbre.transfer_timbre(source_audio_file_name, target_path, label)
             except IndexError:
                 print(
-                    "--transfer expects exactly two arguments \n" + 
+                    "--transfer expects exactly three arguments \n" + 
                     " <source_audio_file_name> <target_path> <label>")
         elif startup_param == "--trasnfer_all":
             try:
