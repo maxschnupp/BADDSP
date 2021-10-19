@@ -4,6 +4,6 @@ STATS_PATH = "assets/statistics"
 SAVE_DIR = "assets/models/ddsp-solo-instrument"
 GIN_BUCKET_NAME = "ddsp-gin-files"
 AUDIO_BUCKET_NAME = "ddsp-audio-renders"
-TAG = "flugelhorn"
+TAG = "viola"
 AUDIO_INPUT = './assets/audioIn'
 AUDIO_OUTPUT = './assets/audioOut'
