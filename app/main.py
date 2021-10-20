@@ -22,7 +22,7 @@ if __name__ == "__main__":
             except IndexError:
                 print(
                     "--transfer expects exactly three arguments \n" + 
-                    " <source_audio_file_name> <target_path> <label>")
+                    " <source_audio_file_name> <target_file_name> <label>")
         elif startup_param == "--trasnfer_all":
             try:
                 label = str(sys.argv[2])
@@ -41,6 +41,6 @@ if __name__ == "__main__":
         print("script expects at least one parameter: \n"
               + "--train <audio_folder_path>:\n"
               + "     to train solo insturment on audio at given location\n "
-              + "--transfer <source_audio_file_name> <target_path>\n"
+              + "--transfer <source_audio_file_name> <target_file_name>\n"
               + "     to transfer timbre from /assets/audioIn/<source_audio_file_name>"
-              + "     to <target_path>")
+              + "     to assets/audioOut/<target_file_name>")
