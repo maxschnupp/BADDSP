@@ -8,11 +8,18 @@ import time
 class TestGinFileWatcher(unittest.TestCase):
 
     def test_gin_file_watcher(self):
-        ##  should match and trigger for files in the folder
+        ##  should match and trigger for files in the folder containing .gin
         with mock.patch('gin_file_watcher.on_created') as on_created:
             file_thread = gin_file_watcher.get_watchdog_thread()
             file_thread.start()
             os.system('> {}/test.gin'.format(constants.SAVE_DIR))
+            time.sleep(4)
+            self.assertTrue(on_created.called)
+        ## should match and trigger for file in the folder containing ckpt somewhere in the name
+        with mock.patch('gin_file_watcher.on_created') as on_created:
+            file_thread = gin_file_watcher.get_watchdog_thread()
+            file_thread.start()
+            os.system('> {}/blahblahckptblahblah'.format(constants.SAVE_DIR))
             time.sleep(4)
             self.assertTrue(on_created.called)
         ##  should not match and not trigger for files not in the folder
