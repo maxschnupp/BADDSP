@@ -5,7 +5,7 @@ import constants
 
 RETRYABLE_ERRORS = (httplib2.HttpLib2Error, IOError)
 
-def retry_upload(blob, source_file_name, base_directory):
+def retry_upload(blob, source_file_name, base_directory, tag):
     try: 
         blob.upload_from_filename("{}/{}".format(base_directory, source_file_name))
         print(
@@ -30,7 +30,7 @@ def upload_to_gin_bucket(source_file_name, tag):
         )
     except RETRYABLE_ERRORS as err:
         print("an error occured uploading the file {}: {}".format(source_file_name, err))
-        retry_upload(blob, source_file_name, constants.SAVE_DIR)
+        retry_upload(blob, source_file_name, constants.SAVE_DIR, tag)
 
 
 def upload_to_audio_bucket(source_file_name, tag):
