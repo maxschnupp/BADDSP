@@ -36,7 +36,7 @@ def transfer_all(label, directory):
     counter = 0
     for _ , _ , files in os.walk(directory):
         for file in files:
-            print("transfering", file)
             target_file_name = "{}-{}".format(counter, file)
+            print("transfering: ", file, " to ", target_file_name)
             transfer_timbre(file, target_file_name, label)
             counter += 1
