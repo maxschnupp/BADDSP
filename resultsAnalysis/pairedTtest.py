@@ -2,7 +2,7 @@ from xmlrpc.client import boolean
 import numpy as np
 from scipy import stats
 from typing import List, Dict
-ALPHA = 0.05
+ALPHA = 0.025
 #participantGroupedScores[0] should represent matching scores [1] opposite
 def pairedT(participantGroupedScores: List[Dict[str, List[int]]]):
     populationMean = 0
@@ -21,6 +21,6 @@ def pairedT(participantGroupedScores: List[Dict[str, List[int]]]):
 
     print('t_c', calculatedT)
     print('critical t', criticalT)
-    print('t_c < critical t', criticalT)
+    print('t_c < critical t', calculatedT < criticalT)
     
 
