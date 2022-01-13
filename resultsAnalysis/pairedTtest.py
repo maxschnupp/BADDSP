@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import stats
-#participantGroupedScores[0] should represent matching scores [1] unmatching
+ALPHA = 0.05
+#participantGroupedScores[0] should represent matching scores [1] opposite
 def pairedT(participantGroupedScores, alpha):
     populationMean = 0
     n = len(participantGroupedScores)
@@ -12,7 +13,12 @@ def pairedT(participantGroupedScores, alpha):
         differences.append(item[1] - item[0])
     sampleMean = np.mean(differences)
     standardDeviation = np.std(differences)
-    criticalT = (sampleMean - populationMean) / (standardDeviation / np.sqrt(n))
+    calculatedT = (sampleMean - populationMean) / (standardDeviation / np.sqrt(n))
     degreesOfFreedom = n - 1
+    criticalT = stats.t.ppf(ALPHA, degreesOfFreedom, sampleMean, standardDeviation)
 
+    print('t_c', calculatedT)
+    print('critical t', criticalT)
+    print('t_c < critical t', criticalT)
+    
 
