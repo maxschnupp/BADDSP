@@ -19,8 +19,15 @@ class TestCSVInterface(unittest.TestCase):
         #     returnByPitchRes = csvInterface.getMeanScoresGroupedBy('pitchResMatch', FILEPATH)
         #     printDictionaryReadable(returnByPitchRes)
 
-        def test_getParticipantQsAndAs(self):
-            returnValue = csvInterface.getParticipantQsAndAs(FILEPATH)
-            for item in returnValue: print(item)
+        # def test_getParticipantQsAndAs(self):
+        #     returnValue = csvInterface.getParticipantQsAndAs(FILEPATH)
+        #     for item in returnValue: print(item)
 
+        def test_getParticipantScoresGroupedByCharMatch(self):
+            print('group by excitation')
+            returnByExcitation = csvInterface.getParticipantScoresGroupedByCharMatch('excitationMatch', FILEPATH)
+            print(returnByExcitation)
+            print('group by pitch resolution')
+            returnByPitchRes = csvInterface.getParticipantScoresGroupedByCharMatch('pitchResMatch', FILEPATH)
+            print(returnByPitchRes)
 
