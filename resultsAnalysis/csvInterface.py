@@ -133,3 +133,16 @@ def getMeanScoresGroupedBy(characteristicMatch: str, filepath: str):
         else:
             returnValue['opposing'].append(np.mean(item['values']))
     return returnValue
+
+def getMeansForEachResynthesisExampleInDfFormat(filepath: str):
+    returnValue = {'Model': [], 'Mean Score': []}
+    scores = getQuestionScoresAsDict(filepath)
+    resynthesisExamples = {
+        'sli2sli[SQ001]': {'name' : 'Slide Guitar'}, 
+        'flu2flu[SQ001]': {'name' : 'Flugel Horn'},
+        'vib2vib[SQ001]': {'name' : 'Vibraphone'},
+        'vib2vio[SQ001]': {'name' : 'Vibraphone'},
+    }
+    for key in resynthesisExamples.keys():
+        returnValue['Model'].append(resynthesisExamples[key]['name'])
+        returnValue['Mean Score'].append(np.mean(scores[key]['values']))
