@@ -7,18 +7,19 @@ def printDictionaryReadable(dictionary : dict):
         print(key, dictionary[key])
 
 class TestCSVInterface(unittest.TestCase):
-        # def test_getScoresAsDict(self):
-        #     scoresDict = csvInterface.getQuestionScoresAsDict(FILEPATH)
-        #     printDictionaryReadable(scoresDict)
-        # print('mean scores grouped by')
+        def test_getScoresAsDict(self):
+            scoresDict = csvInterface.getQuestionScoresAsDict(FILEPATH)
+            printDictionaryReadable(scoresDict)
+            scoresDict = csvInterface.getQuestionScoresAsDict(FILEPATH)
         
-        def test_getMeanScoresGroupedBy(self):
-            print('group by excitation')
-            returnByExcitation = csvInterface.getMeanScoresGroupedBy('excitationMatch', FILEPATH)
-            printDictionaryReadable(returnByExcitation)
-            print('group by pitch resolution')
-            returnByPitchRes = csvInterface.getMeanScoresGroupedBy('pitchResMatch', FILEPATH)
-            printDictionaryReadable(returnByPitchRes)
+        
+        # def test_getMeanScoresGroupedBy(self):
+        #     print('group by excitation')
+        #     returnByExcitation = csvInterface.getMeanScoresGroupedBy('excitationMatch', FILEPATH)
+        #     printDictionaryReadable(returnByExcitation)
+        #     print('group by pitch resolution')
+        #     returnByPitchRes = csvInterface.getMeanScoresGroupedBy('pitchResMatch', FILEPATH)
+        #     printDictionaryReadable(returnByPitchRes)
 
         # def test_getParticipantQsAndAs(self):
         #     returnValue = csvInterface.getParticipantQsAndAs(FILEPATH)

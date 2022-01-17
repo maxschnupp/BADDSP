@@ -2,6 +2,7 @@
 import numpy as np
 from scipy import stats
 from typing import List, Dict
+from plots import stripPlot
 ALPHA = 0.025
 #Hypothesis: transfers with opposing characterstics perform worse than those with matching ones
 #   ie. (mean subjective rating of opposing transfers) - (mean subjective rating of matching transfers) < 0
@@ -29,5 +30,5 @@ def pairedT(participantGroupedScores: List[Dict[str, List[int]]]):
     print('critical t', criticalT)
     print('t_c < critical t', calculatedT < criticalT)
     print('confidence interval {} +/- {}'.format(sampleMeanDifference, confidence))
-    
+    stripPlot(differences, 'Difference in score for opposing vs matching transfers')
 

@@ -1,44 +1,10 @@
 import csv
 import numpy as np
+import copy
 from typing import List, Dict
+from constants import NAME_LOOKUP_TABLE, COLUMN_NAMES, MATCH_LOOKUP_TABLE, SCORES_DICT_TEMPLATE
 
-COLUMN_NAMES = [
-    'sli2sli[SQ001]',
-    'sli2vib[SQ001]',
-    'sli2vio[SQ001]',
-    'sli2flu[SQ001]',
-    'vib2vib[SQ001]',
-    'vib2sli[SQ001]',
-    'vib2vio[SQ001]',
-    'vib2flu[SQ001]',
-    'vio2sli[SQ001]',
-    'vio2vib[SQ001]',
-    'vio2vio[SQ001]',
-    'vio2flu[SQ001]',
-    'flu2sli[SQ001]',
-    'flu2vib[SQ001]',
-    'flu2vio[SQ001]',
-    'flu2flu[SQ001]'
-]
 
-MATCH_LOOKUP_TABLE = {
-    COLUMN_NAMES[0]: { 'excitationMatch': True, 'pitchResMatch': True},  
-    COLUMN_NAMES[1]: { 'excitationMatch': True, 'pitchResMatch': False},  
-    COLUMN_NAMES[2]: { 'excitationMatch': False, 'pitchResMatch': True},  
-    COLUMN_NAMES[3]: { 'excitationMatch': False, 'pitchResMatch': False},  
-    COLUMN_NAMES[4]: { 'excitationMatch': True, 'pitchResMatch': True},  
-    COLUMN_NAMES[5]: { 'excitationMatch': True, 'pitchResMatch': False},  
-    COLUMN_NAMES[6]: { 'excitationMatch': False, 'pitchResMatch': False},  
-    COLUMN_NAMES[7]: { 'excitationMatch': False, 'pitchResMatch': True},  
-    COLUMN_NAMES[8]: { 'excitationMatch': False, 'pitchResMatch': True},  
-    COLUMN_NAMES[9]: { 'excitationMatch': False, 'pitchResMatch': False},  
-    COLUMN_NAMES[10]: { 'excitationMatch': True, 'pitchResMatch': True},  
-    COLUMN_NAMES[11]: { 'excitationMatch': True, 'pitchResMatch': False},  
-    COLUMN_NAMES[12]: { 'excitationMatch': False, 'pitchResMatch': False},  
-    COLUMN_NAMES[13]: { 'excitationMatch': False, 'pitchResMatch': True},  
-    COLUMN_NAMES[14]: { 'excitationMatch': True, 'pitchResMatch': False},  
-    COLUMN_NAMES[15]: { 'excitationMatch': True , 'pitchResMatch': True}
-}
 
 def convertStringToNumericScore(label: str):
     if(label == 'AO01') : return 1
@@ -47,7 +13,7 @@ def convertStringToNumericScore(label: str):
     if(label == 'AO04') : return 4
     if(label == 'AO05') : return 3
     if(label == 'AO06') : return 2
-    else: raise ValueError('invalid score label!')
+    else: raise ValueError('invalid score label {}!'.format(label))
 
 
 def convertAllStringsToNumericScores(labels):
@@ -90,24 +56,7 @@ def getParticipantScoresGroupedByCharMatch(charMatch: str, filepath: str) -> Lis
 
 def getQuestionScoresAsDict(filepath: str):
     
-    scoresDict = {
-        COLUMN_NAMES[0]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[0]]},  
-        COLUMN_NAMES[1]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[1]]},  
-        COLUMN_NAMES[2]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[2]]},  
-        COLUMN_NAMES[3]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[3]]},  
-        COLUMN_NAMES[4]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[4]]},  
-        COLUMN_NAMES[5]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[5]]},   
-        COLUMN_NAMES[6]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[6]]},  
-        COLUMN_NAMES[7]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[7]]},  
-        COLUMN_NAMES[8]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[8]]},  
-        COLUMN_NAMES[9]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[9]]},  
-        COLUMN_NAMES[10]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[10]]},  
-        COLUMN_NAMES[11]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[11]]},  
-        COLUMN_NAMES[12]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[12]]},  
-        COLUMN_NAMES[13]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[13]]},  
-        COLUMN_NAMES[14]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[14]]},  
-        COLUMN_NAMES[15]: {'values' : [], **MATCH_LOOKUP_TABLE[COLUMN_NAMES[15]]}
-    }
+    scoresDict = copy.deepcopy(SCORES_DICT_TEMPLATE)
 
     with open(filepath, 'r') as survey_data_raw:
         csv_reader = csv.DictReader(survey_data_raw)
@@ -117,8 +66,8 @@ def getQuestionScoresAsDict(filepath: str):
                 #discard data from incomplete surveys
                 if(row['submitdate'] != '') : scoresDict[key]['values'].append(row[key])
         
-        for key in scoresDict.keys():
-            scoresDict[key]['values'] = convertAllStringsToNumericScores(scoresDict[key]['values'])
+    for key in scoresDict.keys():
+        scoresDict[key]['values'] = convertAllStringsToNumericScores(scoresDict[key]['values'])
 
     return scoresDict
     
@@ -139,10 +88,19 @@ def getMeansForEachResynthesisExampleInDfFormat(filepath: str):
     scores = getQuestionScoresAsDict(filepath)
     resynthesisExamples = {
         'sli2sli[SQ001]': {'name' : 'Slide Guitar'}, 
-        'flu2flu[SQ001]': {'name' : 'Flugel Horn'},
         'vib2vib[SQ001]': {'name' : 'Vibraphone'},
-        'vib2vio[SQ001]': {'name' : 'Vibraphone'},
+        'flu2flu[SQ001]': {'name' : 'Flugel Horn'},
+        'vio2vio[SQ001]': {'name' : 'Viola'},
     }
     for key in resynthesisExamples.keys():
         returnValue['Model'].append(resynthesisExamples[key]['name'])
         returnValue['Mean Score'].append(np.mean(scores[key]['values']))
+    return returnValue
+
+def getMeansForEachExampleInDfFormat(filepath: str):
+    returnValue = {'Model': [], 'Mean Score': []}
+    scores = getQuestionScoresAsDict(filepath)
+    for key in scores.keys():
+        returnValue['Model'].append(key[0:7])
+        returnValue['Mean Score'].append(np.mean(scores[key]['values']))
+    return returnValue

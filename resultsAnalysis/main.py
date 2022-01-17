@@ -1,6 +1,6 @@
 import csvInterface
 import pairedTtest
-import boxplotGroupedMeans
+import plots
 FILEPATH = 'data/test.csv'
 
 print("paired t test for matching excitations")
@@ -13,4 +13,8 @@ print("paired t test for matching pitch resolutions")
 participantScoresGroupedByPitchResMatch = csvInterface.getParticipantScoresGroupedByCharMatch('pitchResMatch', FILEPATH)
 pairedTtest.pairedT(participantScoresGroupedByPitchResMatch)
 
-boxplotGroupedMeans.boxplotGroupedMeans(FILEPATH)
+plots.boxplotGroupedMeans(FILEPATH)
+
+plots.barplotResynthesisMeans(FILEPATH)
+
+plots.barplotAllMeans(FILEPATH)
